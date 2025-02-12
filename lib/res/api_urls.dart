@@ -1,11 +1,13 @@
 class ApiUrl {
   static const String uploadimage = "${baseUrl}admin/uploads/";
   // static const String baseUrl = 'https://root.winzy.com/';
-  static const String baseUrl = 'https://root.globalbet24.live/';
+  // static const String baseUrl = 'https://stormaviator.in/';
+  static const String baseUrl ='https://stormaviator.usawin.vip/';
   static const String configModel = "${baseUrl}api/";
 
   static const String login = "${configModel}login";
   static const String register = "${configModel}register";
+  static const String aviatorHistory = '${baseUrl}aviator_history';
   static const String profile = "${configModel}profile?id=";
   static const String allTranscationType = "${configModel}transaction_history_list";
   static const String allTranscation = "${configModel}transaction_history?userid=";
@@ -34,7 +36,6 @@ class ApiUrl {
 
   static const String activityRewards = "${configModel}activity_rewards?userid=";
   static const String activityClaimRewards = "${configModel}activity_rewards_claim";
-
   static const String activityRewardsHistory = "${configModel}activity_rewards_history?userid=";
 
   static const String invitationBonusList = "${configModel}invitation_bonus_list?userid=";

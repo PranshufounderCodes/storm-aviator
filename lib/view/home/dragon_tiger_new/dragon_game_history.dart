@@ -508,13 +508,8 @@ class _DragonTigerHistoryState extends State<DragonTigerHistory> {
 
   Future<void> gameHistory() async {
     try {
-      // Fetch userId
       UserModel user = await userProvider.getUser();
       String token = user.id.toString();
-      print(token);
-      print(widget.gameid);
-      print('pdmksfmgkmpkmhkpemjo');
-      // Prepare the API request
       final response = await http.post(
         Uri.parse(ApiUrl.gameHistory),
         headers: <String, String>{
@@ -522,7 +517,7 @@ class _DragonTigerHistoryState extends State<DragonTigerHistory> {
         },
         body: jsonEncode(<String, String>{
           "game_id": widget.gameid.toString(),
-          "userid": token ?? '',
+          "userid": token,
           "limit": "10",
           // "offset": offset // Uncomment if offset is required
         }),

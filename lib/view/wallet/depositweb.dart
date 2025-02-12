@@ -22,9 +22,6 @@ class _PaymentWebState extends State<PaymentWeb> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.url);
-    print('wwwwww');
-
     return SafeArea(
       child: Scaffold(
         appBar: GradientAppBar(

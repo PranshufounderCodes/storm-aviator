@@ -10,7 +10,6 @@ import 'package:stormaviator/res/aap_colors.dart';
 import 'package:stormaviator/res/components/app_bar.dart';
 import 'package:stormaviator/res/components/app_btn.dart';
 import 'package:stormaviator/res/components/text_widget.dart';
-import 'package:stormaviator/res/components/theam_color.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
 import 'package:http/http.dart'as http;
 
@@ -34,8 +33,8 @@ class _InvitationRewardRulesState extends State<InvitationRewardRules> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffolddark,
-      appBar: GradientAppBar(
-        leading: const AppBackBtn(),
+      appBar: const GradientAppBar(
+        leading: AppBackBtn(),
         title: Text(
           'Invitation reward rules',
           style: TextStyle(

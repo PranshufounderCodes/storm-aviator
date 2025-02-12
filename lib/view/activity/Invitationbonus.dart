@@ -377,12 +377,6 @@ class _InvitationBonusState extends State<InvitationBonus> {
                                 title:  data.status=="0"?"Claimed":data.status=="1"?"Not Completed":"Claim Now",
                                 fontSize: 20,
                                 onTap: () {
-                                  print(data.noOfInvitees);
-                                  print('noofincvgh');
-                                  print(data.noOfUser);
-                                  print('useertghnjm');
-                                  print(data.status);
-                                  print("stasrtdfghgbjn");
                                   data.status=="0"?
                                   Utils.flushBarErrorMessage("Already Claimed", context, AppColors.red):
                                       data.status=="1"?
@@ -429,7 +423,6 @@ class _InvitationBonusState extends State<InvitationBonus> {
         Uri.parse(ApiUrl.bonusClaim),
       );
     }
-    print({"userid": token, "amount": amount});
     var data = jsonDecode(response.body);
     if (data["status"] == 200) {
       invationbonusList();

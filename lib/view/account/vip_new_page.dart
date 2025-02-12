@@ -17,9 +17,9 @@ import 'package:stormaviator/res/provider/profile_provider.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
 import 'package:stormaviator/utils/utils.dart';
 import 'package:stormaviator/view/account/vip_history.dart';
-import 'package:stormaviator/view/home/mini/Aviator/progressbar.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart'as http;
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/progressbar.dart';
 
 class VipScreenNew extends StatefulWidget {
   const VipScreenNew({super.key});

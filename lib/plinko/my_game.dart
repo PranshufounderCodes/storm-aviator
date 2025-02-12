@@ -1093,14 +1093,7 @@ class _MyGameWidgetState extends State<MyGameWidget> {
         "type": type
       }),
     );
-        print(gameId);
-        print("gameidddddd");
-        print(amount);
-        print("amounttttttttttttt");
-        print(type);
-        print("type");
     if (response.statusCode == 200) {
-
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       for (int i = 0; i < selectedBalls; i++) {
         await Future.delayed(
@@ -1108,8 +1101,6 @@ class _MyGameWidgetState extends State<MyGameWidget> {
         widget.game.onTapDown();
       }
       setState(() {
-      //  context.read<ProfileProvider>().fetchProfileData();
-
         if (type == '1') {
           loaderOne = false;
         } else if (type == '2') {
@@ -1118,19 +1109,13 @@ class _MyGameWidgetState extends State<MyGameWidget> {
           loaderThree = false;
         }
       });
-
-
       Fluttertoast.showToast(msg: responseData['message']);
       await Future.delayed(const Duration(seconds: 15),(){
         fetchPlinkoBethistory();
         setState(() {
           context.read<ProfileProvider>().fetchProfileData();
-
         });
-
       });
-
-
     } else {
       //setRegLoading(false);
       final Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -1188,15 +1173,9 @@ class _MyGameWidgetState extends State<MyGameWidget> {
     final response = await http.get(
       Uri.parse("${ApiUrl.plinkoList}2"),
     );
-    if (kDebugMode) {
-      print("${ApiUrl.plinkoList}2");
-      print('plinkoList');
-    }
-
     setState(() {
       responseStatuscode = response.statusCode;
     });
-
     if (response.statusCode == 200) {
       context.read<ProfileProvider>().fetchProfileData();
       final List<dynamic> responseData = json.decode(response.body)['data'];

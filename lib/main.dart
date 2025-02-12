@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:stormaviator/model/colorPredictionResult_provider.dart';
 import 'package:stormaviator/res/app_constant.dart';
 import 'package:stormaviator/res/provider/TermsConditionProvider.dart';
@@ -24,19 +25,17 @@ import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_game_his_
 import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_my_his_view_model.dart';
 import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_pop_up_view_model.dart';
 import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_result_view_model.dart';
-import 'package:stormaviator/view/home/mini/Aviator/AviatorProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   runApp(const MyApp());
-
 }
 
 double height = 0.0;
@@ -54,7 +53,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserAuthProvider()),
-        ChangeNotifierProvider(create: (context) => AviatorWallet()),
         ChangeNotifierProvider(create: (context) => UserViewProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => SliderProvider()),
@@ -67,7 +65,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TermsConditionProvider()),
         ChangeNotifierProvider(create: (context) => PrivacyPolicyProvider()),
         ChangeNotifierProvider(create: (context) => ContactUsProvider()),
-        ChangeNotifierProvider(create: (context) => BetColorResultProviderTRX()),
+        ChangeNotifierProvider(
+            create: (context) => BetColorResultProviderTRX()),
         ChangeNotifierProvider(create: (context) => PlinkoBetHistoryProvider()),
         //win go
         ChangeNotifierProvider(create: (context) => WinGoController()),
@@ -114,6 +113,7 @@ class MyApp extends StatelessWidget {
               title: AppConstants.appName,
               debugShowCheckedModeBanner: false,
               initialRoute: RoutesName.splashScreen,
+              // home: KeralaResults(),
               onGenerateRoute: (settings) {
                 if (settings.name != null) {
                   return MaterialPageRoute(
@@ -128,5 +128,13 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }

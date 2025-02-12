@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const primaryTextColor = Color(0xFFFFFFFF);
+  static const scaffoldDark = Color(0xfff6f7ff);
   static const secondaryTextColor = Color(0xFF759fde);
   static const secondaryContainerTextColor = Color(0xFF374992);
   static const gradientFirstColor = Color(0xFF43b5ec);

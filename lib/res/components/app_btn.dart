@@ -297,8 +297,6 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   }
 }
 
-
-
 class Text_Button extends StatelessWidget {
   final String? text;
   final double? fontSize;

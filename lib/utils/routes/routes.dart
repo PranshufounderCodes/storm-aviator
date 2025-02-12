@@ -8,7 +8,7 @@ import 'package:stormaviator/view/auth/register_otp.dart';
 import 'package:stormaviator/view/auth/splash_screen_test.dart';
 import 'package:stormaviator/view/bottom/bottom_nav_bar.dart';
 import 'package:stormaviator/view/home/lottery/wingo/win_go.dart';
-import 'package:stormaviator/view/home/mini/Aviator/home_page_aviator.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/home_page_aviator.dart';
 import 'package:stormaviator/view/wallet/add_bank_account.dart';
 import 'package:stormaviator/view/wallet/deposit_history.dart';
 import 'package:stormaviator/view/wallet/deposit_screen.dart';

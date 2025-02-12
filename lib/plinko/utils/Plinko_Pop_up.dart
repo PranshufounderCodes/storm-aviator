@@ -313,8 +313,6 @@ class _PlinkoPopUpPageState extends State<PlinkoPopUpPage> {
     final response = await http.get(
       Uri.parse("${ApiUrl.plinkoBetHistory}userid=$token&offset=$offsetResult&limit=10"),
     );
-    print("${ApiUrl.plinkoBetHistory}userid=$token&offset=$offsetResult&limit=10");
-
 
     setState(() {
       responseStatuscode = response.statusCode;

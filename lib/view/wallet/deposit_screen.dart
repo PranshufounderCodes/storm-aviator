@@ -16,7 +16,6 @@ import 'package:stormaviator/res/components/text_widget.dart';
 import 'package:stormaviator/res/helper/api_helper.dart';
 import 'package:stormaviator/res/provider/profile_provider.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
-import 'package:stormaviator/utils/routes/routes_name.dart';
 import 'package:stormaviator/utils/utils.dart';
 import 'package:stormaviator/view/wallet/deposit_history.dart';
 import 'package:stormaviator/view/wallet/depositweb.dart';
@@ -186,7 +185,7 @@ class _DepositScreenState extends State<DepositScreen> {
                               fontSize: 25,
                               color: AppColors.primaryTextColor,
                             ),
-                             SizedBox(width: 15),
+                             const SizedBox(width: 15),
                             InkWell(
                                 onTap: () {
                                   context.read<ProfileProvider>().fetchProfileData();

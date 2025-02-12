@@ -73,13 +73,10 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.url);
-    print('wwwwww');
-
     return SafeArea(
       child: Scaffold(
         appBar: GradientAppBar(
-            leading:  AppBackBtn(),
+            leading:  const AppBackBtn(),
             title: textWidget(
                 text: 'Pay', fontSize: 25,color: Colors.white),
             gradient: AppColors.blueGradient),

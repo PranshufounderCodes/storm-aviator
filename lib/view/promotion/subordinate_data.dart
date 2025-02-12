@@ -378,7 +378,9 @@ class _SubOrdinateDataScreenState extends State<SubOrdinateDataScreen> {
       },
     ).then((value) {
       if (value != null) {
-        print('Selected Tier: $value');
+        if (kDebugMode) {
+          print('Selected Tier: $value');
+        }
       }
     });
   }

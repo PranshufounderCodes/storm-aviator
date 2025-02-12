@@ -60,14 +60,14 @@ class _AllBetHistoryState extends State<AllBetHistory> {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: [
-                selectableContainer(
-                  isSelected: selectedIndex == 0,
-                  onTap: () {
-                    selectIndex(0);
-                  },
-                  text: 'Wingo',
-                  imagePath: Assets.categoryWingocoin1,
-                ),
+                // selectableContainer(
+                //   isSelected: selectedIndex == 0,
+                //   onTap: () {
+                //     selectIndex(0);
+                //   },
+                //   text: 'Wingo',
+                //   imagePath: Assets.categoryWingocoin1,
+                // ),
                 // selectableContainer(
                 //   isSelected: selectedIndex == 1,
                 //   onTap: () {
@@ -76,14 +76,14 @@ class _AllBetHistoryState extends State<AllBetHistory> {
                 //   text: 'Trx',
                 //   imagePath: Assets.categoryTrxcoin1,
                 // ),
-                selectableContainer(
-                  isSelected: selectedIndex == 2,
-                  onTap: () {
-                    selectIndex(2);
-                  },
-                  text: 'Dragon Tiger',
-                  imagePath: Assets.categoryChess,
-                ),
+                // selectableContainer(
+                //   isSelected: selectedIndex == 2,
+                //   onTap: () {
+                //     selectIndex(2);
+                //   },
+                //   text: 'Dragon Tiger',
+                //   imagePath: Assets.categoryChess,
+                // ),
                 selectableContainer(
                   isSelected: selectedIndex == 3,
                   onTap: () {
@@ -92,14 +92,14 @@ class _AllBetHistoryState extends State<AllBetHistory> {
                   text: 'Avaitor',
                   imagePath: Assets.aviatorFanAviator,
                 ),
-                selectableContainer(
-                  isSelected: selectedIndex == 4,
-                  onTap: () {
-                    selectIndex(4);
-                  },
-                  text: 'Plinko',
-                  imagePath: Assets.iconsPlonkoicon,
-                ),
+                // selectableContainer(
+                //   isSelected: selectedIndex == 4,
+                //   onTap: () {
+                //     selectIndex(4);
+                //   },
+                //   text: 'Plinko',
+                //   imagePath: Assets.iconsPlonkoicon,
+                // ),
                 // selectableContainer(
                 //   isSelected: selectedIndex == 5,
                 //   onTap: () {

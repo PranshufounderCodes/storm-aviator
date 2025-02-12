@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:stormaviator/model/user_model.dart';
 import 'package:stormaviator/res/api_urls.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
-import 'package:stormaviator/view/home/mini/Aviator/widget/imagetoast.dart';
+import 'package:stormaviator/view/home/dragon_tiger_new/widgets/Image_tost.dart';
+
 
 
 class BetColorResultProviderTRX with ChangeNotifier {
@@ -36,10 +37,9 @@ class BetColorResultProviderTRX with ChangeNotifier {
       }),
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
       setRegLoading(false);
       Navigator.pop(context);
-      return  ImageToast.show(imagePath: Assets.imagesBetSucessfull, context: context,heights: 200,widths: 200);
+      return  ImageToast.show(imagePath: Assets.imagesBetSucessfull, context: context,height: 200,width: 200);
     } else {
       setRegLoading(false);
       final Map<String, dynamic> responseData = jsonDecode(response.body);

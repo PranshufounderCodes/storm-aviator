@@ -252,6 +252,5 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
       imagePath="https://admin.codingjourneyr.live/${data["image"]}";
       usdtcode="${data["usdtcode"]}";
     });
-    print(imagePath);
   }
 }

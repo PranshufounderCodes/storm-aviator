@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stormaviator/model/transction_type_model.dart';
@@ -49,7 +50,9 @@ class TransctionTypeState extends State<TransctionType> {
         throw Exception('Failed to load transaction types');
       }
     } catch (e) {
-      print('Error fetching transaction types: $e');
+      if (kDebugMode) {
+        print('Error fetching transaction types: $e');
+      }
     } finally {
       setState(() {
         isLoading = false;

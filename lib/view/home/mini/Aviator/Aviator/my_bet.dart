@@ -7,7 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:stormaviator/model/user_model.dart';
 import 'package:stormaviator/res/api_urls.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
-import 'package:stormaviator/view/home/mini/Aviator/aviator_model/my_bet_model.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/aviator_model/my_bet_model.dart';
+
 
 
 class AllBets {

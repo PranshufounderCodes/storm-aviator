@@ -3,7 +3,6 @@
 import 'package:stormaviator/utils/utils.dart';
 import 'package:stormaviator/view/account/all_bet_history/all_bet_history.dart';
 import 'package:stormaviator/view/account/beginnerguide.dart';
-import 'package:stormaviator/view/account/vip_new_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stormaviator/generated/assets.dart';

@@ -1,260 +1,271 @@
-
 import 'dart:convert';
-import 'package:stormaviator/generated/assets.dart';
-import 'package:stormaviator/main.dart';
-import 'package:stormaviator/model/user_model.dart';
-import 'package:stormaviator/res/aap_colors.dart';
-import 'package:stormaviator/res/api_urls.dart';
-import 'package:stormaviator/res/components/app_bar.dart';
-import 'package:stormaviator/res/components/app_btn.dart';
-import 'package:stormaviator/res/components/clipboard.dart';
-import 'package:stormaviator/res/components/image_picker.dart';
-import 'package:stormaviator/res/components/text_widget.dart';
-import 'package:stormaviator/res/provider/user_view_provider.dart';
-import 'package:stormaviator/utils/utils.dart';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:stormaviator/model/user_model.dart';
+import 'package:stormaviator/res/aap_colors.dart';
+import 'package:stormaviator/res/components/app_btn.dart';
+import 'package:stormaviator/res/components/text_widget.dart';
+import 'package:stormaviator/generated/assets.dart';
+import 'package:stormaviator/res/provider/user_view_provider.dart';
 
 class UploadScreenshots extends StatefulWidget {
-  String amount;
+  final String amount;
 
-  UploadScreenshots({super.key, required this.amount,});
+  const UploadScreenshots({super.key, required this.amount});
 
   @override
   State<UploadScreenshots> createState() => _UploadScreenshotsState();
 }
 
 class _UploadScreenshotsState extends State<UploadScreenshots> {
+  String imagePath = "";
+  String uploadedImageUrl = "";
+  String qrCodeUrl = "";
+  String walletAddress = "";
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
-    getImage();
     super.initState();
+    fetchQrData();
   }
 
-  String imagePath="";
-  String usdtcode = "";
+  Future<void> fetchQrData() async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://stormaviator.in/api/show_qr'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"type": "1"}),
+      );
 
-  @override
-  Widget build(BuildContext context) {
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        if (jsonResponse["data"] != null && jsonResponse["data"].isNotEmpty) {
+          var data = jsonResponse["data"][0];
 
-    return SafeArea(
-      child:
-      Scaffold(
-        backgroundColor: AppColors.scaffolddark,
-        appBar: GradientAppBar(
-            leading: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Image.asset(Assets.iconsArrowBack)),
-            ),
-            title: textWidget(
-                text: 'Upload Screenshot', fontSize: 25, color: AppColors.primaryTextColor),
-            gradient: AppColors.secondaryappbar),
-        body: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(height: height*0.02),
-            Center(
-              child: Text("Total amount:${widget.amount}", style: const TextStyle(
-                  fontSize: 16, color: Colors.white
-              ),),
-            ),
-            SizedBox(height: height*0.02),
-            Center(
-              child: SizedBox(
-                height: height*0.50,
-                    width: width*0.80,
-                child:imagePath ==""?const SizedBox(): Image.network(imagePath),
-              ),
-            ),
-
-            SizedBox(height: height * 0.04),
-            Column(
-              children: [
-                const Text("Copy code:", style: TextStyle(
-                    fontSize: 16, color: Colors.white
-                ),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                     Text(usdtcode=="null"?"":usdtcode.toString(), style: const TextStyle(
-                        fontSize: 12, color: Colors.white
-                    ),),
-                    IconButton(onPressed: (){
-                      copyToClipboard(usdtcode=="null"?"":usdtcode.toString(), context);
-                    }, icon: const Icon(Icons.copy,color: Colors.white,size: 15,))
-                  ],
-                ),
-
-              ],
-            ),
-            Center(
-              child: AppBtn(
-                width: width*0.44,
-                onTap: (){
-                  _settingModalBottomSheet(context);
-                },
-                title: "Upload Screenshot",
-                gradient: AppColors.containerGradient,
-              ),
-            ),
-            SizedBox(height: height*0.02,),
-            SizedBox(
-              height: 120,
-              width: 200,
-              child: myData != '0'
-                  ? Image.memory(base64Decode(myData))
-                  : Image.network(ApiUrl.uploadimage),
-            ),
-            SizedBox(height: height*0.02,),
-            AppBtn(
-              onTap: (){
-                // usdtPay(widget.cont,widget.amount,context);
-              },
-              title: "Confirm",
-            ),
-            SizedBox(height: height*0.03,)
-
-          ],
-        ),
-      ),
-    );
-  }
-
-  String myData = '0';
-  void _updateImage(ImageSource imageSource) async {
-    String? imageData = await ChooseImage.chooseImageAndConvertToString(imageSource);
-    if (imageData != null) {
+          setState(() {
+            qrCodeUrl = data["qr_code"] ?? '';
+            walletAddress = data["wallet_address"] ?? '';
+          });
+        } else {
+          setState(() {
+            qrCodeUrl = '';
+            walletAddress = '';
+          });
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching QR data: $e");
+      }
       setState(() {
-        myData = imageData;
+        qrCodeUrl = '';
+        walletAddress = '';
       });
     }
   }
 
-  void _settingModalBottomSheet(context) {
-    
-    showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-        ),
-        context: context,
-        builder: (BuildContext bc) {
-          return SizedBox(
-            height: height / 7,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  width / 12, 0, width / 12, height / 60),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _updateImage(ImageSource.camera);
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: height / 20,
-                      width: width / 2.7,
-                      decoration: BoxDecoration(
-                        // color: Colors.blue,
-                          border: Border.all(color: Colors.red, width: 2),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Center(
-                          child: Text(
-                            "Camera",
-                            style: TextStyle(color: Colors.red),
-                          )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      _updateImage(ImageSource.gallery);
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: height / 20,
-                      width: width / 2.7,
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Center(
-                          child: Text(
-                            "Gallery",
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        imagePath = pickedFile.path;
+      });
+    }
   }
-
 
   UserViewProvider userProvider = UserViewProvider();
 
-  usdtPay(String usdtamount, String amountINR, context) async {
-    if (kDebugMode) {
-      print("uhyfu");
-    }
+  Future<void> _uploadImage(File imageFile) async {
+
     UserModel user = await userProvider.getUser();
-    String token = user.id.toString();
-    if (kDebugMode) {
-      print(token);
-    }
-    final response = await http.post(Uri.parse(ApiUrl.usdtdeposit),
-        // headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: jsonEncode({
-          "userid": token,
-          "actual_amount": usdtamount,
-          "amount":amountINR,
-          "screenshot":myData
-        })
-    );
-    if (kDebugMode) {
-      print(ApiUrl.usdtdeposit);
-      print("ApiUrl.usdtdeposit");
-      print(usdtamount);
-      print(amountINR);
+    String userid = user.id.toString();
+    try {
+      List<int> imageBytes = await imageFile.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
 
-    }
-    if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      if (kDebugMode) {
-        print(data);
-        print("👍👍👍👍");
-      }
-      if(data["status"]==200){
+      var body = {
+        "user_id": userid,
+        "cash": widget.amount,
+        "type": "1",
+        "screenshot": base64Image,
+      };
+
+      // Make the POST request
+      var response = await http.post(
+        Uri.parse("https://stormaviator.in/api/usdt_payinn"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+        String message = responseData["message"];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
         Navigator.pop(context);
-        Utils.flushBarSuccessMessage(data["message"], context, Colors.white);
-
+      } else {
+        if (kDebugMode) {
+          print("Image upload failed with status code: ${response.statusCode}");
+        }
       }
-      else {
-        Utils.flushBarErrorMessage(data["message"], context, Colors.white);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error uploading image: $e");
       }
     }
-    else{
-      throw Exception("error");
-    }
-
+  }
+  void _settingModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+      ),
+      context: context,
+      builder: (BuildContext bc) {
+        return SizedBox(
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _pickImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                child: const Text("Camera"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _pickImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                child: const Text("Gallery"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  getImage()async{
-    var res= await  http.get(Uri.parse("https://stormaviatorr.live/admin/index.php/Mahajongapi/usdt_slider"));
-    var data = jsonDecode(res.body)["data"][0];
-    setState(() {
-      imagePath="https://admin.stormaviatorr.live/${data["image"]}";
-      usdtcode="${data["usdtcode"]}";
-    });
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      appBar: AppBar(
+        backgroundColor: AppColors.browntextprimary,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(Assets.iconsArrowBack),
+          ),
+        ),
+        title: textWidget(
+            text: 'Upload Screenshot',
+            fontSize: 25,
+            color: AppColors.primaryTextColor),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          Text("Total amount: ${widget.amount}",
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          Center(
+            child: qrCodeUrl.isNotEmpty
+                ? Image.network(qrCodeUrl.toString(),
+                    height: 250, width: 250, fit: BoxFit.cover)
+                : const CircularProgressIndicator(),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              textWidget(
+                  text: walletAddress.isNotEmpty
+                      ? walletAddress
+                      : 'Fetching Wallet Address...',
+                  fontSize: 12,
+                  color: AppColors.blackColor),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Clipboard.setData(
+                      ClipboardData(text: walletAddress.toString()));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Wallet Address Copied!")),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.blackColor,
+                  ),
+                  child: textWidget(
+                      text: "Copy", fontSize: 15, color: AppColors.whiteColor),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: uploadedImageUrl.isNotEmpty
+                ? Image.network(uploadedImageUrl,
+                height: 250, width: 250, fit: BoxFit.cover)
+                : imagePath.isNotEmpty
+                ? Image.file(File(imagePath),
+                height: 250, width: 250, fit: BoxFit.cover)
+                : const Text("No image selected"),
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: AppBtn(
+              width: 200,
+              onTap: () => _settingModalBottomSheet(context),
+              title: "Upload Screenshot",
+              gradient: AppColors.containerGradient,
+            ),
+          ),
+          const SizedBox(height: 20),
+          AppBtn(
+            onTap: () {
+              if (uploadedImageUrl.isNotEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Image uploaded successfully!")),
+                );
+              } else if (imagePath.isNotEmpty) {
+                              _uploadImage(File(imagePath)).then((_) {
+                }).catchError((e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Error uploading image: $e")),
+                  );
+                });
+              } else {
+                // Show a SnackBar if no image is selected
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please select an image first.")),
+                );
+              }
+            },
+            title: "Confirm",
+          )
+
+        ],
+      ),
+    );
   }
 }
-
-

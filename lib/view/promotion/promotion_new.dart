@@ -224,6 +224,7 @@ class _PromotionScreenNewState extends State<PromotionScreenNew> {
                           // 'Join Now & Get ₹50 and Exiting Prizes. here is my Referral Code : ${userData.referralCode}',
                           // linkUrl: "${ApiUrl.baseUrl}?id=$invitationCode",
                           linkUrl: context.read<ProfileProvider>().referralCodeUrl,
+
                           chooserTitle: 'Referral Code : ');
 
                     },

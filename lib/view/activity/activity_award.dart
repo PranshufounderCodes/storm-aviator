@@ -267,10 +267,6 @@ class _ActivityAwardState extends State<ActivityAward> {
                                 onTap: () {
                                   data.status=="2"?
                                   claimRewards(context,betAmount.toString(),data.activityId.toString()):null;
-                                  print(betAmount);
-                                  print("betAmount");
-                                  print(data.activityId);
-                                  print("data.activityId");
                                 },
                                 child: Container(
                                   height: 30,

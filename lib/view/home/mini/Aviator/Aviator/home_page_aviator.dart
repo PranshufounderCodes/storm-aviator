@@ -5,28 +5,28 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stormaviator/res/components/app_btn.dart';
-import 'package:stormaviator/res/marquee/marquee.dart';
 import 'dart:math' as math;
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:stormaviator/generated/assets.dart';
 import 'package:stormaviator/main.dart';
 import 'package:stormaviator/model/user_model.dart';
 import 'package:stormaviator/res/aap_colors.dart';
 import 'package:stormaviator/res/api_urls.dart';
 import 'package:stormaviator/res/app_constant.dart';
+import 'package:stormaviator/res/components/app_btn.dart';
 import 'package:stormaviator/res/components/audio.dart';
+import 'package:stormaviator/res/marquee/marquee.dart';
 import 'package:stormaviator/res/provider/profile_provider.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
 import 'package:stormaviator/utils/utils.dart';
-import 'package:stormaviator/view/home/mini/Aviator/aviator_constant/aviator_assets.dart';
-import 'package:stormaviator/view/home/mini/Aviator/aviator_model/result_history_model.dart';
-import 'package:stormaviator/view/home/mini/Aviator/my_bet.dart';
-import 'package:stormaviator/view/home/mini/Aviator/widget/small_toggel_switch.dart';
-import 'package:stormaviator/view/home/mini/Aviator/widget/switch.dart';
-import 'package:stormaviator/view/home/mini/Aviator/widget/toggel_switch.dart';
-import 'package:provider/provider.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/aviator_constant/aviator_assets.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/aviator_model/result_history_model.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/my_bet.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/widget/small_toggel_switch.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/widget/switch.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/widget/toggel_switch.dart';
 
 class GameAviator extends StatefulWidget {
   const GameAviator({super.key});
@@ -190,7 +190,6 @@ class _GameAviatorState extends State<GameAviator>
               ),
             )
           :
-          // child:
           Scaffold(
               backgroundColor: const Color(0xff101011),
               appBar: AppBar(
@@ -1107,6 +1106,7 @@ class _GameAviatorState extends State<GameAviator>
         animationControl();
         bet == true ? changeColor = "1" : changeColor = "2";
         betTwo == true ? changeColorTwo = "1" : changeColorTwo = "2";
+
       }
       if (receiveData['status'] == 0) {
         if (_isMounted) {
@@ -1116,6 +1116,7 @@ class _GameAviatorState extends State<GameAviator>
             betplaced = true;
             betPlacedTwo = true;
           });
+          resultHistory();
           demoBet();
           if(betTime==99){
             resultHistory();
@@ -1134,17 +1135,13 @@ class _GameAviatorState extends State<GameAviator>
                   receiveData['status'].toString());
             }
           }
-
-
         }
-        // changeColor="0";
       }
       if (receiveData['status'] == 2) {
         bet = false;
         betTwo = false;
         dummyBet.clear();
         planFlew();
-
         if (_isMounted) {
           setState(() {
             betplaced = false;
@@ -2518,6 +2515,9 @@ class _GameAviatorState extends State<GameAviator>
     final response = await http.get(Uri.parse(
         '${ApiUrl.aviatorBet}$userid&number=$betNo&amount=$amount&game_id=5&game_sr_num=$perios'));
     final resData = jsonDecode(response.body);
+
+    print('${ApiUrl.aviatorBet}$userid&number=$betNo&amount=$amount&game_id=5&game_sr_num=$perios');
+    print('dekhobhaiya');
     if (resData["status"] == 200) {
       context.read<ProfileProvider>().fetchProfileData();
       Utils.flushBarSuccessMessage(resData['message'], context, Colors.black);
@@ -2574,27 +2574,49 @@ class _GameAviatorState extends State<GameAviator>
   }
 
   List<ResultHistoryModel> number = [];
+  // Future<void> resultHistory() async {
+  //   context.read<ProfileProvider>().fetchProfileData();
+  //   const url = ApiUrl.aviatorResult;
+  //   //'https://admin.aviatorays.in/api/aviator/last_five_result';
+  //   final response = await http.get(Uri.parse(url));
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> responseData = json.decode(response.body)['data'];
+  //     setState(() {
+  //       number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
+  //     });
+  //
+  //   } else if (response.statusCode == 400) {
+  //     // Handle 400 status code
+  //   } else {
+  //     setState(() {
+  //       number = [];
+  //     });
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
+
   Future<void> resultHistory() async {
-    context.read<ProfileProvider>().fetchProfileData();
-    const url = ApiUrl.aviatorResult;
-    //'https://admin.aviatorays.in/api/aviator/last_five_result';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body)['data'];
+    try {
+      context.read<ProfileProvider>().fetchProfileData();
+      const url = ApiUrl.aviatorResult;
+      final response = await http.get(Uri.parse(url));
 
-      setState(() {
-        number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
-      });
-
-    } else if (response.statusCode == 400) {
-      // Handle 400 status code
-    } else {
-      setState(() {
-        number = [];
-      });
-      throw Exception('Failed to load data');
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body)['data'];
+        if (responseData.isNotEmpty) {
+          setState(() {
+            number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
+          });
+        }
+      } else {
+        print("Error: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Exception: $e");
     }
   }
+
+
 
   UserViewProvider userProvider = UserViewProvider();
 }

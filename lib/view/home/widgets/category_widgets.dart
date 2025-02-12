@@ -1,9 +1,8 @@
 import 'package:stormaviator/generated/assets.dart';
 import 'package:stormaviator/main.dart';
 import 'package:stormaviator/res/components/text_widget.dart';
-import 'package:stormaviator/view/home/lottery/wingo/win_go.dart';
-import 'package:stormaviator/view/home/mini/Aviator/home_page_aviator.dart';
 import 'package:flutter/material.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/home_page_aviator.dart';
 
 class CategoryWidget extends StatefulWidget {
   final Function(int) onCategorySelected;

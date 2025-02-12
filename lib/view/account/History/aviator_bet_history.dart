@@ -9,7 +9,7 @@ import 'package:stormaviator/res/aap_colors.dart';
 import 'package:stormaviator/res/api_urls.dart';
 import 'package:stormaviator/res/components/text_widget.dart';
 import 'package:stormaviator/res/provider/user_view_provider.dart';
-import 'package:stormaviator/view/home/mini/Aviator/aviator_model/my_bet_model.dart';
+import 'package:stormaviator/view/home/mini/Aviator/Aviator/aviator_model/my_bet_model.dart';
 
 
 class AllBets {

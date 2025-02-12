@@ -99,13 +99,8 @@ class _HowToPlayState extends State<HowToPlay> {
 
   var description;
   invitationRuleApi() async {
-    print("fdfuya");
-    print("chla");
     final type = widget.type.toString();
-    final response = await http.get(
-      Uri.parse("${ApiUrl.aboutus}type=$type"),
-
-    );
+    final response = await http.get(Uri.parse("${ApiUrl.aboutus}type=$type"));
     setState(() {
       responseStatuscode=response.statusCode;
     });

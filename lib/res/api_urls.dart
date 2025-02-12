@@ -132,5 +132,12 @@ class ApiUrl {
   static const String bonusClaim = "${configModel}invitation_bonus_claim";
 
 
+  static const String depositQR = "${configModel}show_qr";
+  static const String usdtpayinNew = "${configModel}usdt_payinn";
+
+
+
+
+
 
 }

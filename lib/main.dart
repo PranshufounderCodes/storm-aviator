@@ -26,6 +26,7 @@ import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_my_his_vi
 import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_pop_up_view_model.dart';
 import 'package:stormaviator/view/home/lottery/wingo/view_model/win_go_result_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:stormaviator/view/kerala_lottery_result.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -113,7 +114,7 @@ class MyApp extends StatelessWidget {
               title: AppConstants.appName,
               debugShowCheckedModeBanner: false,
               initialRoute: RoutesName.splashScreen,
-              // home: KeralaResults(),
+              // home:  KeralaLotteryResult(),
               onGenerateRoute: (settings) {
                 if (settings.name != null) {
                   return MaterialPageRoute(

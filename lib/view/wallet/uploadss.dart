@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:stormaviator/model/user_model.dart';
 import 'package:stormaviator/res/aap_colors.dart';
+import 'package:stormaviator/res/api_urls.dart';
 import 'package:stormaviator/res/components/app_btn.dart';
 import 'package:stormaviator/res/components/text_widget.dart';
 import 'package:stormaviator/generated/assets.dart';
@@ -38,7 +39,7 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
   Future<void> fetchQrData() async {
     try {
       final response = await http.post(
-        Uri.parse('https://stormaviator.in/api/show_qr'),
+        Uri.parse(ApiUrl.depositQR),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({"type": "1"}),
       );
@@ -89,6 +90,8 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
       List<int> imageBytes = await imageFile.readAsBytes();
       String base64Image = base64Encode(imageBytes);
 
+      print(base64Image);
+
       var body = {
         "user_id": userid,
         "cash": widget.amount,
@@ -98,7 +101,7 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
 
       // Make the POST request
       var response = await http.post(
-        Uri.parse("https://stormaviator.in/api/usdt_payinn"),
+        Uri.parse(ApiUrl.usdtpayinNew),
         headers: {
           "Content-Type": "application/json",
         },
@@ -107,6 +110,8 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
 
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
+        print(base64Image);
+        print("base64Image");
         String message = responseData["message"];
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message)),

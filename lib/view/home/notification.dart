@@ -93,7 +93,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: HtmlWidget(items[index].disc.toString()
+                            child: HtmlWidget(items[index].disc.toString(),
+                              textStyle: TextStyle(color: Colors.white),
                             ),
                           ),
 

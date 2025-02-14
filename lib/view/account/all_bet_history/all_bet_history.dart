@@ -85,9 +85,9 @@ class _AllBetHistoryState extends State<AllBetHistory> {
                 //   imagePath: Assets.categoryChess,
                 // ),
                 selectableContainer(
-                  isSelected: selectedIndex == 3,
+                  isSelected: selectedIndex == 0,
                   onTap: () {
-                    selectIndex(3);
+                    selectIndex(0);
                   },
                   text: 'Avaitor',
                   imagePath: Assets.aviatorFanAviator,
@@ -119,17 +119,18 @@ class _AllBetHistoryState extends State<AllBetHistory> {
               ],
             ),
           ),
+          // selectedIndex == 0
+          //     ? const WingoMyHis()
+          //     : selectedIndex == 1
+          //         ? const TrxAllHistory()
+          //         : selectedIndex == 2
+          //             ? const DragonTigerHistory(
+          //                 gameid: '10',)
+          //             :
           selectedIndex == 0
-              ? const WingoMyHis()
-              : selectedIndex == 1
-                  ? const TrxAllHistory()
-                  : selectedIndex == 2
-                      ? const DragonTigerHistory(
-                          gameid: '10',)
-                      : selectedIndex == 3
               ? const AvaitorAllHistory(gameid: '5',):
-          selectedIndex == 4
-              ? const PlinkobetHistoryPage(gameid: '11'):
+          // selectedIndex == 4
+          //     ? const PlinkobetHistoryPage(gameid: '11'):
           // selectedIndex == 5
           // ?const AndharBaharPopUpPage(gameId: '13',):
           //     selectedIndex == 6

@@ -1,8 +1,8 @@
 class ApiUrl {
   static const String uploadimage = "${baseUrl}admin/uploads/";
-  // static const String baseUrl = 'https://root.winzy.com/';
-  // static const String baseUrl = 'https://stormaviator.in/';
-  static const String baseUrl ='https://stormaviator.usawin.vip/';
+
+  // static const String baseUrl ='https://stormaviator.usawin.vip/';
+  static const String baseUrl ='https://root.stormaviator.in/';
   static const String configModel = "${baseUrl}api/";
 
   static const String login = "${configModel}login";

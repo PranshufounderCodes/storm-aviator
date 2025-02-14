@@ -5,7 +5,6 @@ import 'package:stormaviator/res/app_constant.dart';
 import 'package:stormaviator/res/provider/profile_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stormaviator/generated/assets.dart';
@@ -218,15 +217,11 @@ class _PromotionScreenNewState extends State<PromotionScreenNew> {
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     onTap: () async {
-                      await FlutterShare.share(
-                          title: 'Referral Code :',
-                          text:"Join our gaming platform to win exciting prizes. Here is my Referral Code : $invitationCode",
-                          // 'Join Now & Get ₹50 and Exiting Prizes. here is my Referral Code : ${userData.referralCode}',
-                          // linkUrl: "${ApiUrl.baseUrl}?id=$invitationCode",
-                          linkUrl: context.read<ProfileProvider>().referralCodeUrl,
 
-                          chooserTitle: 'Referral Code : ');
-
+                      await Share.share(
+                      'Referral Code : "Join our platform to win exciting prizes.'
+                      'Here is my Referral Code : ${invitationCode}",'
+                      'link: ${context.read<ProfileProvider>().referralCodeUrl}');
                     },
                   ),
                   ListView.builder(

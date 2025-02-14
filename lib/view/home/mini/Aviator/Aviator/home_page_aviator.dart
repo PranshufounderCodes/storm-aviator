@@ -125,6 +125,8 @@ class _GameAviatorState extends State<GameAviator>
     _controller.forward();
   }
 
+  bool updateApi = false;
+
   @override
   Widget build(BuildContext context) {
     List dummyBets = dummyBet.reversed.toList();
@@ -1116,10 +1118,16 @@ class _GameAviatorState extends State<GameAviator>
             betplaced = true;
             betPlacedTwo = true;
           });
-          resultHistory();
+          if(updateApi==false){
+            resultHistory();
+            print("sefduwfduy");
+          }
           demoBet();
           if(betTime==99){
-            resultHistory();
+            if(updateApi==true){
+              resultHistory();
+              print("eigru9pwrf");
+            }
             if(autoPlay2==false) {
               addBet(
                   amountTwo.text,
@@ -2574,49 +2582,54 @@ class _GameAviatorState extends State<GameAviator>
   }
 
   List<ResultHistoryModel> number = [];
-  // Future<void> resultHistory() async {
-  //   context.read<ProfileProvider>().fetchProfileData();
-  //   const url = ApiUrl.aviatorResult;
-  //   //'https://admin.aviatorays.in/api/aviator/last_five_result';
-  //   final response = await http.get(Uri.parse(url));
-  //   if (response.statusCode == 200) {
-  //     final List<dynamic> responseData = json.decode(response.body)['data'];
-  //     setState(() {
-  //       number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
-  //     });
-  //
-  //   } else if (response.statusCode == 400) {
-  //     // Handle 400 status code
-  //   } else {
-  //     setState(() {
-  //       number = [];
-  //     });
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
-
   Future<void> resultHistory() async {
-    try {
-      context.read<ProfileProvider>().fetchProfileData();
-      const url = ApiUrl.aviatorResult;
-      final response = await http.get(Uri.parse(url));
+    setState(() {
+      updateApi=true;
+    });
+    context.read<ProfileProvider>().fetchProfileData();
+    const url = ApiUrl.aviatorResult;
+    //'https://admin.aviatorays.in/api/aviator/last_five_result';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body)['data'];
+      setState(() {
+        updateApi=false;
+        number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
+      });
 
-      if (response.statusCode == 200) {
-        final List<dynamic> responseData = json.decode(response.body)['data'];
-        if (responseData.isNotEmpty) {
-          setState(() {
-            number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
-          });
-        }
-      } else {
-        print("Error: ${response.statusCode}");
-      }
-    } catch (e) {
-      print("Exception: $e");
+    } else if (response.statusCode == 400) {
+      setState(() {
+        updateApi=false;
+      });
+    } else {
+      setState(() {
+        number = [];
+        updateApi=false;
+      });
+      throw Exception('Failed to load data');
     }
   }
 
-
+  // Future<void> resultHistory() async {
+  //   try {
+  //     context.read<ProfileProvider>().fetchProfileData();
+  //     const url = ApiUrl.aviatorResult;
+  //     final response = await http.get(Uri.parse(url));
+  //
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> responseData = json.decode(response.body)['data'];
+  //       if (responseData.isNotEmpty) {
+  //         setState(() {
+  //           number = responseData.map((data) => ResultHistoryModel.fromJson(data)).toList();
+  //         });
+  //       }
+  //     } else {
+  //       print("Error: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     print("Exception: $e");
+  //   }
+  // }
 
   UserViewProvider userProvider = UserViewProvider();
 }

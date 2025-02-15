@@ -1247,7 +1247,7 @@ class _GameAviatorState extends State<GameAviator>
                       itemCount: number.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        final double price = number[index].price;
+                        final double price = double.parse(number[index].price.toString());
                         Color textColor;
                         if (price > 1 && price < 2) {
                           textColor = Colors.blue;
@@ -1339,7 +1339,7 @@ class _GameAviatorState extends State<GameAviator>
               mainAxisSpacing: 2,
             ),
             itemBuilder: (BuildContext context, int index) {
-              final double price = number[index].price;
+              final double price = double.parse(number[index].price.toString());
               Color textColor;
               if (price > 1 && price < 2) {
                 textColor = Colors.blue;

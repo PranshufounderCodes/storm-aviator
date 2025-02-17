@@ -30,6 +30,8 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
 
   final ImagePicker _picker = ImagePicker();
 
+  bool loader = false;
+
   @override
   void initState() {
     super.initState();
@@ -83,6 +85,9 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
   UserViewProvider userProvider = UserViewProvider();
 
   Future<void> _uploadImage(File imageFile) async {
+    setState(() {
+      loader=true;
+    });
 
     UserModel user = await userProvider.getUser();
     String userid = user.id.toString();
@@ -99,7 +104,6 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
         "screenshot": base64Image,
       };
 
-      // Make the POST request
       var response = await http.post(
         Uri.parse(ApiUrl.usdtpayinNew),
         headers: {
@@ -109,6 +113,10 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          loader=false;
+        });
+
         var responseData = jsonDecode(response.body);
         print(base64Image);
         print("base64Image");
@@ -118,11 +126,17 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
         );
         Navigator.pop(context);
       } else {
+        setState(() {
+          loader=false;
+        });
         if (kDebugMode) {
           print("Image upload failed with status code: ${response.statusCode}");
         }
       }
     } catch (e) {
+      setState(() {
+        loader=false;
+      });
       if (kDebugMode) {
         print("Error uploading image: $e");
       }
@@ -247,6 +261,7 @@ class _UploadScreenshotsState extends State<UploadScreenshots> {
           ),
           const SizedBox(height: 20),
           AppBtn(
+            loading: loader,
             onTap: () {
               if (uploadedImageUrl.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(

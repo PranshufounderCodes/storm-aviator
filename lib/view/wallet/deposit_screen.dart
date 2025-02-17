@@ -263,7 +263,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                               fallbackHeight: 45,
                                             ),
                                       textWidget(
-                                          text: "Indian Pay",
+                                          text: items[index].name,
                                           fontSize: 13,
                                           color: selectedIndex == currentId
                                               ? AppColors.primaryTextColor
@@ -662,7 +662,7 @@ class _DepositScreenState extends State<DepositScreen> {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadScreenshots(amount: depositCon.text,)));
                           },
                           hideBorder: true,
-                          title: 'Indian Pay Deposit',
+                          title: 'USDT Deposit',
                           gradient: AppColors.loginSecondryGrad,
                         )
                       : loading == false && selectedIndex == 2

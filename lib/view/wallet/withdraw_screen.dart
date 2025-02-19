@@ -64,7 +64,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     final userData = context.watch<ProfileProvider>();
-    double withdrawAmount = double.tryParse(withdrawCon.text) ?? 0;
+    double withdrawAmount = double.tryParse(usdtCon.text) ?? 0;
 
     return Scaffold(
         backgroundColor: AppColors.scaffolddark,
@@ -239,336 +239,326 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                 payUsing == 1||payUsing == 2
-                        ? Column(
-                            children: [
-                              responseStatuscode == 400
-                                  ?  Container()
-                                  : items.isEmpty
-                                      ? Container()
-                                      : ListView.builder(
-                                          itemCount: items.length,
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final currentId = int.parse(
-                                                items[index].id.toString());
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      2, 2, 2, 5),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    image: const DecorationImage(
-                                                        image: AssetImage(
-                                                          Assets.imagesBankcard,
-                                                        ),
-                                                        fit: BoxFit.fill),
-                                                    color: AppColors
-                                                        .percentageColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: ListTile(
-                                                    leading: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          selectedIndex =
-                                                              currentId;
-                                                          withdrawacid =
-                                                              items[index]
-                                                                  .id
-                                                                  .toString();
-                                                          if (kDebugMode) {
-                                                            print(
-                                                                selectedIndex);
-                                                            print(currentId);
-                                                            print("zxcfvgbhn");
-                                                          }
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 30,
-                                                        width: 30,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            selectedIndex ==
-                                                                    currentId
-                                                                ? BoxDecoration(
-                                                                    image: const DecorationImage(
-                                                                        image: AssetImage(
-                                                                            Assets.iconsCorrect)),
-                                                                    border: Border.all(
-                                                                        color: Colors
-                                                                            .transparent),
-                                                                    borderRadius:
-                                                                        BorderRadiusDirectional.circular(
-                                                                            50),
-                                                                  )
-                                                                : BoxDecoration(
-                                                                    border: Border.all(
-                                                                        color: AppColors
-                                                                            .gradientFirstColor),
-                                                                    borderRadius:
-                                                                        BorderRadiusDirectional.circular(
-                                                                            50),
-                                                                  ),
-                                                      ),
-                                                    ),
-                                                    title: textWidget(
-                                                        text: items[index]
-                                                            .name
-                                                            .toString(),
-                                                        fontSize: width * 0.04,
-                                                        color: Colors.white),
-                                                    subtitle: textWidget(
-                                                        text: items[index]
-                                                            .accountNumber
-                                                            .toString(),
-                                                        fontSize: width * 0.034,
-                                                        color: Colors.white),
-                                                    trailing: IconButton(
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_outlined,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    AccountView(
-                                                                        data: items[
-                                                                            index])));
-                                                      },
-                                                    )),
-                                              ),
-                                            );
-                                          }),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, RoutesName.addBankAccount);
-                                },
-                                child: Card(
-                                  elevation: 4,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                    width: width,
-                                    padding: const EdgeInsets.fromLTRB(
-                                        15, 15, 15, 15),
-                                    decoration: BoxDecoration(
-                                        gradient:
-                                            AppColors.primaryUnselectedGradient,
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                10)),
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(width: 15),
-                                        Image.asset(
-                                          Assets.iconsAddBank,
-                                          height: 60,
-                                        ),
-                                        const SizedBox(width: 15),
-                                        textWidget(
-                                            text: 'Add a bank account number',
-                                            color: AppColors.primaryTextColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w900),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Container(
-                                width: width,
-                                padding: const EdgeInsets.only(
-                                    top: 15, left: 15, right: 15),
-                                decoration: BoxDecoration(
-                                    gradient:
-                                        AppColors.primaryUnselectedGradient,
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(15)),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(width: 15),
-                                    textWidget(
-                                        text:
-                                            'Need to add beneficiary information to be able to withdraw money',
-                                        color: AppColors.primaryTextColor,
-                                        fontWeight: FontWeight.w900),
-                                    const SizedBox(height: 10),
-                                    CustomTextField(
-                                      hintText: 'Please enter the amount',
-                                      fieldRadius: BorderRadius.circular(30),
-                                      textColor: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      controller: withdrawCon,
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value){
-                                        setState(() {
-                                          payUsing==3;
-                                        });
-                                      },
-                                      prefixIcon: SizedBox(
-                                        width: 70,
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(width: 10),
-                                            const Icon(
-                                              Icons.currency_rupee,
-                                              color:
-                                                  AppColors.gradientFirstColor,
-                                              size: 25,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Container(
-                                                height: 30,
-                                                color: Colors.white,
-                                                width: 2)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        textWidget(
-                                            text: 'Withdrawal balance    ',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w900,
-                                            color: AppColors.dividerColor),
-                                        Row(
-                                          children: [
-                                            const Icon(Icons.currency_rupee,
-                                                size: 16,
-                                                color: AppColors
-                                                    .gradientFirstColor),
-                                            textWidget(
-                                                text: userData.mainWallet
-                                                    .toStringAsFixed(2),
-                                                //==''?'0.0':(int.parse(withdrawCon.text)*0.96).toStringAsFixed(2),
-                                                fontSize: 16,
-                                                color: AppColors
-                                                    .gradientFirstColor),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        textWidget(
-                                            text: 'Withdrawal amount received',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w900,
-                                            color: AppColors.dividerColor),
-                                        Row(
-                                          children: [
-                                            const Icon(Icons.currency_rupee,
-                                                size: 20,
-                                                color: AppColors
-                                                    .gradientFirstColor),
-                                            textWidget(
-                                                text: withdrawCon.text == ''
-                                                    ? '0.0'
-                                                    : withdrawCon.text
-                                                        .toString(),
-                                                // (int.parse(withdrawCon.text)*0.96).toStringAsFixed(2),
-                                                fontSize: 18,
-                                                color: AppColors
-                                                    .gradientFirstColor),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    withdrawAmount >= double.parse(userData.minimumWithdraw.toString()) && withdrawAmount <= userData.mainWallet
-                                        ? AppBtn(
-                                      onTap: () {
-                                        withdrawalMoney(context,withdrawCon.text);
-                                        setState(() {
-                                          payUsing==3;
-                                        });
-
-                                      },
-                                      hideBorder: true,
-                                      title: 'Withdraw',
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 18,
-                                      gradient: AppColors.loginSecondryGrad,
-                                    )
-                                        : AppBtn(
-                                        onTap: () {
-                                          if(withdrawCon.text.isEmpty){
-                                            Utils.flushBarErrorMessage("Please enter amount", context, Colors.white);
-                                          }
-                                        },
-                                        hideBorder: true,
-                                        title: 'Withdraw',
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 18,
-                                        gradient: AppColors.primaryappbargrey),
-
-                                    // AppBtn(
-                                    //   onTap: () {
-                                    //     withdrawalMoney(context,withdrawCon.text);
-                                    //   },
-                                    //   hideBorder: true,
-                                    //   title: 'Withdraw',
-                                    //   fontWeight: FontWeight.w900,
-                                    //   fontSize: 18,
-                                    //   gradient: AppColors.loginSecondryGrad,
-                                    // ),
-                                    const SizedBox(height: 40),
-                                    Container(
-                                      width: width * 0.85,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color:
-                                                  AppColors.gradientFirstColor,
-                                              width: 1),
-                                          borderRadius:
-                                              BorderRadiusDirectional.circular(
-                                                  15)),
-                                      child: Column(
-                                        children: [
-                                          instruction(
-                                              'Need to bet ',
-                                              '₹${userData.recharge.toStringAsFixed(2)}',
-                                              ' to be able to withdraw',
-                                              Colors.white,
-                                              AppColors.gradientFirstColor,
-                                              Colors.white),
-                                          ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  invitationRuleList.length,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, index) {
-                                                return instruction1(
-                                                    invitationRuleList[index]);
-                                              }),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
-                          )
+                 payUsing == 2?Container()
+                        // ? Column(
+                        //     children: [
+                        //       responseStatuscode == 400
+                        //           ?  Container()
+                        //           : items.isEmpty
+                        //               ? Container()
+                        //               : ListView.builder(
+                        //                   itemCount: items.length,
+                        //                   shrinkWrap: true,
+                        //                   physics:
+                        //                       const NeverScrollableScrollPhysics(),
+                        //                   itemBuilder: (BuildContext context,
+                        //                       int index) {
+                        //                     final currentId = int.parse(
+                        //                         items[index].id.toString());
+                        //                     return Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.fromLTRB(
+                        //                               2, 2, 2, 5),
+                        //                       child: Container(
+                        //                         decoration: BoxDecoration(
+                        //                             image: const DecorationImage(
+                        //                                 image: AssetImage(
+                        //                                   Assets.imagesBankcard,
+                        //                                 ),
+                        //                                 fit: BoxFit.fill),
+                        //                             color: AppColors
+                        //                                 .percentageColor,
+                        //                             borderRadius:
+                        //                                 BorderRadius.circular(
+                        //                                     10)),
+                        //                         child: ListTile(
+                        //                             leading: GestureDetector(
+                        //                               onTap: () {
+                        //                                 setState(() {
+                        //                                   selectedIndex =
+                        //                                       currentId;
+                        //                                   withdrawacid =
+                        //                                       items[index]
+                        //                                           .id
+                        //                                           .toString();
+                        //                                   if (kDebugMode) {
+                        //                                     print(
+                        //                                         selectedIndex);
+                        //                                     print(currentId);
+                        //                                     print("zxcfvgbhn");
+                        //                                   }
+                        //                                 });
+                        //                               },
+                        //                               child: Container(
+                        //                                 height: 30,
+                        //                                 width: 30,
+                        //                                 alignment:
+                        //                                     Alignment.center,
+                        //                                 decoration:
+                        //                                     selectedIndex ==
+                        //                                             currentId
+                        //                                         ? BoxDecoration(
+                        //                                             image: const DecorationImage(
+                        //                                                 image: AssetImage(
+                        //                                                     Assets.iconsCorrect)),
+                        //                                             border: Border.all(
+                        //                                                 color: Colors
+                        //                                                     .transparent),
+                        //                                             borderRadius:
+                        //                                                 BorderRadiusDirectional.circular(
+                        //                                                     50),
+                        //                                           )
+                        //                                         : BoxDecoration(
+                        //                                             border: Border.all(
+                        //                                                 color: AppColors
+                        //                                                     .gradientFirstColor),
+                        //                                             borderRadius:
+                        //                                                 BorderRadiusDirectional.circular(
+                        //                                                     50),
+                        //                                           ),
+                        //                               ),
+                        //                             ),
+                        //                             title: textWidget(
+                        //                                 text: items[index]
+                        //                                     .name
+                        //                                     .toString(),
+                        //                                 fontSize: width * 0.04,
+                        //                                 color: Colors.white),
+                        //                             subtitle: textWidget(
+                        //                                 text: items[index]
+                        //                                     .accountNumber
+                        //                                     .toString(),
+                        //                                 fontSize: width * 0.034,
+                        //                                 color: Colors.white),
+                        //                             trailing: IconButton(
+                        //                               icon: const Icon(
+                        //                                 Icons
+                        //                                     .arrow_forward_ios_outlined,
+                        //                                 color: Colors.white,
+                        //                               ),
+                        //                               onPressed: () {
+                        //                                 Navigator.push(
+                        //                                     context,
+                        //                                     MaterialPageRoute(
+                        //                                         builder: (context) =>
+                        //                                             AccountView(
+                        //                                                 data: items[
+                        //                                                     index])));
+                        //                               },
+                        //                             )),
+                        //                       ),
+                        //                     );
+                        //                   }),
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           Navigator.pushNamed(
+                        //               context, RoutesName.addBankAccount);
+                        //         },
+                        //         child: Card(
+                        //           elevation: 4,
+                        //           shape: RoundedRectangleBorder(
+                        //               borderRadius: BorderRadius.circular(10)),
+                        //           child: Container(
+                        //             width: width,
+                        //             padding: const EdgeInsets.fromLTRB(
+                        //                 15, 15, 15, 15),
+                        //             decoration: BoxDecoration(
+                        //                 gradient:
+                        //                     AppColors.primaryUnselectedGradient,
+                        //                 borderRadius:
+                        //                     BorderRadiusDirectional.circular(
+                        //                         10)),
+                        //             child: Column(
+                        //               children: [
+                        //                 const SizedBox(width: 15),
+                        //                 Image.asset(
+                        //                   Assets.iconsAddBank,
+                        //                   height: 60,
+                        //                 ),
+                        //                 const SizedBox(width: 15),
+                        //                 textWidget(
+                        //                     text: 'Add a bank account number',
+                        //                     color: AppColors.primaryTextColor,
+                        //                     fontSize: 16,
+                        //                     fontWeight: FontWeight.w900),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       const SizedBox(height: 20),
+                        //       Container(
+                        //         width: width,
+                        //         padding: const EdgeInsets.only(
+                        //             top: 15, left: 15, right: 15),
+                        //         decoration: BoxDecoration(
+                        //             gradient:
+                        //                 AppColors.primaryUnselectedGradient,
+                        //             borderRadius:
+                        //                 BorderRadiusDirectional.circular(15)),
+                        //         child: Column(
+                        //           children: [
+                        //             const SizedBox(width: 15),
+                        //             textWidget(
+                        //                 text:
+                        //                     'Need to add beneficiary information to be able to withdraw money',
+                        //                 color: AppColors.primaryTextColor,
+                        //                 fontWeight: FontWeight.w900),
+                        //             const SizedBox(height: 10),
+                        //             CustomTextField(
+                        //               hintText: 'Please enter the amount',
+                        //               fieldRadius: BorderRadius.circular(30),
+                        //               textColor: Colors.white,
+                        //               fontWeight: FontWeight.w600,
+                        //               controller: withdrawCon,
+                        //               keyboardType: TextInputType.number,
+                        //               onChanged: (value){
+                        //                 setState(() {
+                        //                   payUsing==3;
+                        //                 });
+                        //               },
+                        //               prefixIcon: SizedBox(
+                        //                 width: 70,
+                        //                 child: Row(
+                        //                   children: [
+                        //                     const SizedBox(width: 10),
+                        //                     const Icon(
+                        //                       Icons.currency_rupee,
+                        //                       color:
+                        //                           AppColors.gradientFirstColor,
+                        //                       size: 25,
+                        //                     ),
+                        //                     const SizedBox(width: 10),
+                        //                     Container(
+                        //                         height: 30,
+                        //                         color: Colors.white,
+                        //                         width: 2)
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             const SizedBox(height: 10),
+                        //             Row(
+                        //               children: [
+                        //                 textWidget(
+                        //                     text: 'Withdrawal balance    ',
+                        //                     fontSize: 14,
+                        //                     fontWeight: FontWeight.w900,
+                        //                     color: AppColors.dividerColor),
+                        //                 Row(
+                        //                   children: [
+                        //                     const Icon(Icons.currency_rupee,
+                        //                         size: 16,
+                        //                         color: AppColors
+                        //                             .gradientFirstColor),
+                        //                     textWidget(
+                        //                         text: userData.mainWallet
+                        //                             .toStringAsFixed(2),
+                        //                         //==''?'0.0':(int.parse(withdrawCon.text)*0.96).toStringAsFixed(2),
+                        //                         fontSize: 16,
+                        //                         color: AppColors
+                        //                             .gradientFirstColor),
+                        //                   ],
+                        //                 )
+                        //               ],
+                        //             ),
+                        //             const SizedBox(height: 5),
+                        //             Row(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.spaceBetween,
+                        //               children: [
+                        //                 textWidget(
+                        //                     text: 'Withdrawal amount received',
+                        //                     fontSize: 14,
+                        //                     fontWeight: FontWeight.w900,
+                        //                     color: AppColors.dividerColor),
+                        //                 Row(
+                        //                   children: [
+                        //                     const Icon(Icons.currency_rupee,
+                        //                         size: 20,
+                        //                         color: AppColors
+                        //                             .gradientFirstColor),
+                        //                     textWidget(
+                        //                         text: withdrawCon.text == ''
+                        //                             ? '0.0'
+                        //                             : withdrawCon.text
+                        //                                 .toString(),
+                        //                         // (int.parse(withdrawCon.text)*0.96).toStringAsFixed(2),
+                        //                         fontSize: 18,
+                        //                         color: AppColors
+                        //                             .gradientFirstColor),
+                        //                   ],
+                        //                 )
+                        //               ],
+                        //             ),
+                        //             const SizedBox(height: 10),
+                        //             withdrawAmount >= double.parse(userData.minimumWithdraw.toString()) && withdrawAmount <= userData.mainWallet
+                        //                 ? AppBtn(
+                        //               onTap: () {
+                        //                 withdrawalMoney(context,withdrawCon.text);
+                        //                 setState(() {
+                        //                   payUsing==3;
+                        //                 });
+                        //
+                        //               },
+                        //               hideBorder: true,
+                        //               title: 'Withdraw',
+                        //               fontWeight: FontWeight.w900,
+                        //               fontSize: 18,
+                        //               gradient: AppColors.loginSecondryGrad,
+                        //             )
+                        //                 : AppBtn(
+                        //                 onTap: () {
+                        //                   if(withdrawCon.text.isEmpty){
+                        //                     Utils.flushBarErrorMessage("Please enter amount", context, Colors.white);
+                        //                   }
+                        //                 },
+                        //                 hideBorder: true,
+                        //                 title: 'Withdraw',
+                        //                 fontWeight: FontWeight.w900,
+                        //                 fontSize: 18,
+                        //                 gradient: AppColors.primaryappbargrey),
+                        //
+                        //             const SizedBox(height: 40),
+                        //             Container(
+                        //               width: width * 0.85,
+                        //               decoration: BoxDecoration(
+                        //                   border: Border.all(
+                        //                       color:
+                        //                           AppColors.gradientFirstColor,
+                        //                       width: 1),
+                        //                   borderRadius:
+                        //                       BorderRadiusDirectional.circular(
+                        //                           15)),
+                        //               child: Column(
+                        //                 children: [
+                        //                   instruction(
+                        //                       'Need to bet ',
+                        //                       '₹${userData.recharge.toStringAsFixed(2)}',
+                        //                       ' to be able to withdraw',
+                        //                       Colors.white,
+                        //                       AppColors.gradientFirstColor,
+                        //                       Colors.white),
+                        //                   ListView.builder(
+                        //                       shrinkWrap: true,
+                        //                       itemCount:
+                        //                           invitationRuleList.length,
+                        //                       physics:
+                        //                           const NeverScrollableScrollPhysics(),
+                        //                       itemBuilder: (context, index) {
+                        //                         return instruction1(
+                        //                             invitationRuleList[index]);
+                        //                       }),
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //             const SizedBox(height: 20),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       const SizedBox(height: 20),
+                        //     ],
+                        //   )
                         : Column(
                             children: [
                               Container(
@@ -576,9 +566,10 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                 padding: const EdgeInsets.only(
                                     top: 15, left: 15, right: 15),
                                 decoration: BoxDecoration(
-                                    gradient: AppColors.secondaryappbar,
+                                    gradient:
+                                    AppColors.primaryUnselectedGradient,
                                     borderRadius:
-                                        BorderRadiusDirectional.circular(15)),
+                                    BorderRadiusDirectional.circular(15)),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -593,7 +584,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                             text: 'USDT amount',
                                             fontSize: 20,
                                             fontWeight: FontWeight.w900,
-                                            color: AppColors.goldencolorthree),
+                                            color: AppColors.whiteColor),
                                       ],
                                     ),
                                     const SizedBox(height: 10),
@@ -610,7 +601,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                           double amount =
                                               double.tryParse(value) ?? 0;
                                           resultt =
-                                              (amount / 92).toStringAsFixed(2);
+                                              (amount / int.parse(userData.usdtWithdrawConversionRate)).toStringAsFixed(2);
                                         });
                                       },
                                       prefixIcon: SizedBox(
@@ -648,7 +639,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                       style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w900,
-                                          color: AppColors.goldencolorthree),
+                                          color: AppColors.whiteColor),
                                     ),
                                     SizedBox(height: height * 0.01),
                                     CustomTextField(
@@ -689,20 +680,73 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                       ),
                                     ),
                                     SizedBox(height: height * 0.02),
-                                    const SizedBox(height: 10),
-                                    AppBtn(
+                                    withdrawAmount >= double.parse(userData.minimumWithdraw.toString()) && withdrawAmount <= userData.mainWallet
+                                        ? AppBtn(
                                       onTap: () {
-                                        withdrawalMoney(context,
-                                          usdtCon.text
-                                        );
+                                        withdrawalMoney(context,walletaddress.text,usdtCon.text,resultt.toString());
+                                        print(walletaddress.text);
+                                        print("walletaddress.text");
+                                        print(usdtCon.text);
+                                        print("usdtCon.text");
+                                        print(resultt.toString());
+                                        print("resultt.toString()");
+                                        setState(() {
+                                          payUsing==3;
+                                        });
+
                                       },
                                       hideBorder: true,
-                                      title: 'W i t h d r a w',
+                                      title: 'Withdraw',
                                       fontWeight: FontWeight.w900,
                                       fontSize: 18,
-                                      gradient: AppColors.primaryappbargrey,
+                                      gradient: AppColors.loginSecondryGrad,
+                                    )
+                                        : AppBtn(
+                                        onTap: () {
+                                          if(usdtCon.text.isEmpty){
+                                            Utils.flushBarErrorMessage("Please enter amount", context, Colors.white);
+                                          }
+                                        },
+                                        hideBorder: true,
+                                        title: 'Withdraw',
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 18,
+                                        gradient: AppColors.primaryappbargrey),
+
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      width: width * 0.85,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color:
+                                              AppColors.gradientFirstColor,
+                                              width: 1),
+                                          borderRadius:
+                                          BorderRadiusDirectional.circular(
+                                              15)),
+                                      child: Column(
+                                        children: [
+                                          instruction(
+                                              'Need to bet ',
+                                              '₹${userData.recharge.toStringAsFixed(2)}',
+                                              ' to be able to withdraw',
+                                              Colors.white,
+                                              AppColors.gradientFirstColor,
+                                              Colors.white),
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                              invitationRuleList.length,
+                                              physics:
+                                              const NeverScrollableScrollPhysics(),
+                                              itemBuilder: (context, index) {
+                                                return instruction1(
+                                                    invitationRuleList[index]);
+                                              }),
+                                        ],
+                                      ),
                                     ),
-                                    const SizedBox(height: 40),
+                                    const SizedBox(height: 20),
                                   ],
                                 ),
                               ),
@@ -715,35 +759,74 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   }
 
   ///withdraw api
-  String withdrawacid = '';
+  // String withdrawacid = '';
+  // UserViewProvider userProvider = UserViewProvider();
+  // withdrawalMoney(context,
+  //   String money,
+  // ) async {
+  //   UserModel user = await userProvider.getUser();
+  //   String token = user.id.toString();
+  //
+  //
+  //   final response = await http.post(
+  //     Uri.parse(
+  //       ApiUrl.withdrawl,
+  //     ),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       "user_id": token,
+  //       "account_id": withdrawacid,
+  //       "type": payUsing.toString(),
+  //       "amount": money,
+  //     }),
+  //   );
+  //
+  //   var data = jsonDecode(response.body);
+  //   if (data["status"] == 200) {
+  //     Navigator.pop(context);
+  //     return Utils.flushBarSuccessMessage(data['message'], context, Colors.black);
+  //   } else if (data["status"] == "401") {
+  //   } else {
+  //     Utils.flushBarErrorMessage(data['message'], context, Colors.black);
+  //   }
+  // }
+
   UserViewProvider userProvider = UserViewProvider();
-  withdrawalMoney(context,
-    String money,
-  ) async {
+  withdrawalMoney(context,String usdtAddress, String amountInr,String usdtAmount) async {
     UserModel user = await userProvider.getUser();
     String token = user.id.toString();
 
-
     final response = await http.post(
       Uri.parse(
-        ApiUrl.withdrawl,
+        ApiUrl.withdrawlUsdt,
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "user_id": token,
-        "account_id": withdrawacid,
-        "type": payUsing.toString(),
-        "amount": money,
+        "user_id":token,
+        "usdt_wallet_address": usdtAddress,
+        "amount_inr":amountInr,
+        "usdt_amount":usdtAmount,
+        "type":payUsing.toString()
       }),
     );
 
     var data = jsonDecode(response.body);
-    if (data["status"] == 200) {
+    print(data);
+    print({
+      "user_id":token,
+      "usdt_wallet_address": usdtAddress,
+      "amount_inr":amountInr,
+      "usdt_amount":usdtAmount,
+      "type":payUsing.toString()
+    });
+    print("dgrfiuer");
+    if (data["success"] == true) {
       Navigator.pop(context);
       return Utils.flushBarSuccessMessage(data['message'], context, Colors.black);
-    } else if (data["status"] == "401") {
     } else {
       Utils.flushBarErrorMessage(data['message'], context, Colors.black);
     }

@@ -25,6 +25,7 @@ class ApiUrl {
   static const String addacount = "${configModel}add_account";
   static const String addAccountView = "${configModel}Account_view?user_id=";
   static const String withdrawl = "${configModel}withdraw";
+  static const String withdrawlUsdt = "${configModel}usdtwithdraw";
   static const String giftHistory = "${configModel}claim_list?userid=";
   static const String privacypolicy = "${configModel}privacy_policy";
   static const String customerService = "${configModel}customer_service";

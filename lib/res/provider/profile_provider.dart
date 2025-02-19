@@ -27,6 +27,8 @@ class ProfileProvider with ChangeNotifier {
   dynamic maximumWithdraw;
   dynamic aviatorLink;
   dynamic aviatorEventName;
+  dynamic usdtDepositConversionRate;
+  dynamic usdtWithdrawConversionRate;
 
   UserViewProvider userProvider = UserViewProvider();
 
@@ -56,6 +58,8 @@ class ProfileProvider with ChangeNotifier {
         maximumWithdraw = responseData["maximum_withdraw"];
         aviatorLink = responseData["aviator_link"];
         aviatorEventName = responseData["aviator_event_name"];
+        usdtDepositConversionRate = responseData["usdt_deposit_conversion_rate"];
+        usdtWithdrawConversionRate = responseData["usdt_withdraw_conversion_rate"];
         if (kDebugMode) {
           print(responseData);
           print('Profile API data refreshed');

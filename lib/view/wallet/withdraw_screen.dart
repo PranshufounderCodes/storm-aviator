@@ -824,10 +824,12 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       "type":payUsing.toString()
     });
     print("dgrfiuer");
-    if (data["success"] == true) {
+    if (data["status"] == 200) {
       Navigator.pop(context);
       return Utils.flushBarSuccessMessage(data['message'], context, Colors.black);
-    } else {
+    } else if (data["status"] == 400) {
+      return Utils.flushBarErrorMessage(data['message'], context, Colors.black);
+    }else{
       Utils.flushBarErrorMessage(data['message'], context, Colors.black);
     }
   }
